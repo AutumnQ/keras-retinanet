@@ -322,6 +322,9 @@ def retinanet_bbox(
     # create RetinaNet model
     if model is None:
         model = retinanet(num_anchors=anchor_params.num_anchors(), **kwargs)
+    else:
+        assert('regression' in model.output_names), "No 'regression' output found in model (outputs: {}), is the model already converted?".format(model.output_names)
+        assert('classification' in model.output_names), "No 'classification' output found in model (outputs: {}), is the model already converted?".format(model.output_names)
 
     # compute the anchors
     features = [model.get_layer(p_name).output for p_name in ['P3', 'P4', 'P5', 'P6', 'P7']]
